@@ -1,0 +1,403 @@
+/* 千鳥格子模様の作成: 薄い水色と白 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f0f9ff;
+  background-image: 
+    linear-gradient(45deg, #e0f2fe 25%, transparent 25%), 
+    linear-gradient(-45deg, #e0f2fe 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #e0f2fe 75%), 
+    linear-gradient(-45deg, transparent 75%, #e0f2fe 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  /* ふんわりつけるために透明度を持たせる */
+  opacity: 1;
+  background-blend-mode: overlay;
+  color: #334155;
+}
+
+/* よりふんわりさせるために半透明のオーバーレイ背景を挟む */
+#root {
+  min-height: 100vh;
+  background: rgba(255, 255, 255, 0.75);
+  display: flex;
+  justify-content: center;
+  padding-bottom: 80px; /* ボトムナビゲーション用スペース */
+}
+
+.app-container {
+  width: 100%;
+  max-width: 480px; /* スマホ想定サイズ */
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  color: white;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.app-header p {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.app-main {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e0f2fe;
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 1rem;
+  color: #0369a1;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #f0f9ff;
+  padding-bottom: 6px;
+}
+
+.summary-card {
+  background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+}
+
+.balance-box {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.balance-box .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  display: block;
+}
+
+.balance-box .amount {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 4px;
+  display: block;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 12px;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.summary-item .sub-label {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.summary-item p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.chart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #f1f5f9;
+}
+
+.tx-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: white;
+}
+
+.badge.expense {
+  background-color: #0284c7;
+}
+
+.badge.income {
+  background-color: #10b981;
+}
+
+.tx-category {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1e293b;
+}
+
+.tx-memo {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.tx-amount {
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.tx-amount.expense {
+  color: #0284c7;
+}
+
+.tx-amount.income {
+  color: #10b981;
+}
+
+.tx-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.delete-btn:hover {
+  color: #ef4444;
+}
+
+/* フォーム画面 */
+.entry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.type-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.type-toggle button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.type-toggle button.active.expense {
+  background: #0284c7;
+  color: white;
+  border-color: #0284c7;
+}
+
+.type-toggle button.active.income {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #fff;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #0284c7;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
+  margin-top: 8px;
+  transition: opacity 0.2s;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}
+
+/* カテゴリー別プログレスバー */
+.category-breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.breakdown-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.breakdown-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.breakdown-cat {
+  font-weight: 600;
+  color: #334155;
+}
+
+.breakdown-amount {
+  color: #64748b;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #0284c7);
+  border-radius: 4px;
+}
+
+.empty-text {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  padding: 20px 0;
+  margin: 0;
+}
+
+/* ボトムナビゲーション */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.03);
+  z-index: 100;
+}
+
+.bottom-nav button {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: #64748b;
+  font-size: 0.7rem;
+  cursor: pointer;
+  flex: 1;
+  transition: color 0.2s;
+}
+
+.bottom-nav button.active {
+  color: #0284c7;
+  font-weight: bold;
+}
